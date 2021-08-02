@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -10,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
         padding: '2px 4px',
         display: 'flex',
         alignItems: 'center',
-        width: 400,
+        width: 600,
+        height: 55,
     },
     input: {
         marginLeft: theme.spacing(1),
@@ -33,9 +36,6 @@ export default function SearchBox(props) {
         setSearchValue(e.target.value);
     }
 
-    const resetInputField = () => {
-        setSearchValue("")
-    }
 
     const getBpms = (e) => {
         e.preventDefault()
@@ -58,20 +58,28 @@ export default function SearchBox(props) {
     }
 
     return (
-        <Paper component="form" className={classes.root}>
-            {/* <IconButton className={classes.iconButton} aria-label="menu">
-                <MenuIcon />
-            </IconButton> */}
-            <InputBase
-                className={classes.input}
-                placeholder="Search Songs or Artists"
-                inputProps={{ 'aria-label': 'search songs or artists' }}
-                value={searchValue}
-                onChange={handleSearchInputChanges}
-            />
-            <IconButton type="submit" className={classes.iconButton} onClick={getBpms} aria-label="search">
-                <SearchIcon />
-            </IconButton>
-        </Paper>
+        <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justify="center"
+        >
+            <Box p={4}>
+                <Paper component="form" className={classes.root}>
+                    <InputBase
+                        className={classes.input}
+                        placeholder="Search Songs or Artists"
+                        inputProps={{ 'aria-label': 'search songs or artists' }}
+                        value={searchValue}
+                        onChange={handleSearchInputChanges}
+                    />
+                    <IconButton type="submit" className={classes.iconButton} onClick={getBpms} aria-label="search">
+                        <SearchIcon />
+                    </IconButton>
+                </Paper>
+            </Box>
+        </Grid>
+        
     );
 }

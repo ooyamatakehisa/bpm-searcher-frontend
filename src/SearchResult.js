@@ -1,40 +1,40 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { DataGrid } from '@material-ui/data-grid';
+import React from 'react';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
 
 
 export default function SearchBox(props) {
-    const columns = [
-        {
-            field: 'song',
-            headerName: 'Song',
-            width: 300,
-            editable: true,
-        },
-        { field: 'artist', headerName: 'ARTIST', width: 150 },
-        {
-          field: 'bpm',
-          headerName: 'BPM',
-          width: 150,
-          editable: true,
-        }
-    ]
-    let i = 1;
-    for (let res of props.result) {
-        res["id"] = i
-        i++
-    }
 
     return (
-        <div style={{ height: 500, width: '100%' }}>
-            <DataGrid
-                rows={props.result}
-                columns={columns}
-                pageSize={10}
-                // checkboxSelection
-                // disableSelectionOnClick
-                // style={{color: '#FFFFFF'}}
-            />
-        </div>
+        <Box px={5}>
+            <TableContainer component={Paper}>
+                <Table  aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>SONG</TableCell>
+                            <TableCell>ARTIST</TableCell>
+                            <TableCell>ALBUM</TableCell>
+                            <TableCell>BPM</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {props.result.map((row) => (
+                        <TableRow key={row.song}>
+                            <TableCell>{row.song}</TableCell>
+                            <TableCell>{row.artist}</TableCell>
+                            <TableCell></TableCell>
+                            <TableCell>{row.bpm}</TableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Box>
     );
 }
