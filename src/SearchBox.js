@@ -40,6 +40,7 @@ export default function SearchBox(props) {
     const getBpms = (e) => {
         e.preventDefault()
         props.setIsSearched(true)
+        props.setResult(null)
         const params = { // 渡したいパラメータをJSON形式で書く
             search: searchValue
         };
