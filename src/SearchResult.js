@@ -25,8 +25,8 @@ export default function SearchBox(props) {
                     </TableHead>
                     <TableBody>
                     {props.result.map((row) => (
-                        <TableRow key={row.song}>
-                            <TableCell>{row.song}</TableCell>
+                        <TableRow key={row.song_name}>
+                            <TableCell>{row.song_name}</TableCell>
                             <TableCell>{row.artist}</TableCell>
                             <TableCell></TableCell>
                             <TableCell>{row.bpm}</TableCell>
