@@ -12,12 +12,13 @@ import Box from '@material-ui/core/Box';
 export default function SearchBox(props) {
 
     return (
-        <Box px={5}>
+        <Box px={10}>
             <TableContainer component={Paper}>
                 <Table  aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell>SONG</TableCell>
+                            <TableCell></TableCell>
                             <TableCell>ARTIST</TableCell>
                             <TableCell>ALBUM</TableCell>
                             <TableCell>BPM</TableCell>
@@ -26,9 +27,12 @@ export default function SearchBox(props) {
                     <TableBody>
                     {props.result.map((row) => (
                         <TableRow key={row.song_name}>
+                            <TableCell>
+                                <img src={row.image_url} height="100"/>
+                            </TableCell>
                             <TableCell>{row.song_name}</TableCell>
                             <TableCell>{row.artist}</TableCell>
-                            <TableCell></TableCell>
+                            <TableCell>{row.album_name}</TableCell>
                             <TableCell>{row.bpm}</TableCell>
                         </TableRow>
                     ))}
