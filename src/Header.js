@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
+import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import GitHubIcon from '@material-ui/icons/GitHub';
@@ -48,14 +49,17 @@ export default function PrimarySearchAppBar() {
         <div className={classes.grow}>
         <AppBar position="static">
             <Toolbar>
-            <IconButton
+            {/* <IconButton
                 edge="start"
                 className={classes.menuButton}
                 color="inherit"
                 aria-label="open drawer"
             >
                 <MenuIcon />
-            </IconButton>
+            </IconButton> */}
+            <Box pr={2}>
+                <img src="./favicon.svg" height="25" />
+            </Box>
             <Typography className={classes.title} variant="h6" noWrap>
                 BPM Searcher
             </Typography>
@@ -64,7 +68,7 @@ export default function PrimarySearchAppBar() {
             <IconButton aria-label="show 17 new notifications" color="inherit" onClick={onClickGithub}>
                 <GitHubIcon />
             </IconButton>
-                
+
             </Toolbar>
         </AppBar>
         </div>
