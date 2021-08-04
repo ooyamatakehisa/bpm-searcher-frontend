@@ -30,10 +30,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchBox(props) {
     const classes = useStyles();
-    const [searchValue, setSearchValue] = useState("");
 
     const handleSearchInputChanges = (e) => {
-        setSearchValue(e.target.value);
+        props.setSearchValue(e.target.value);
     }
 
 
@@ -42,14 +41,13 @@ export default function SearchBox(props) {
         props.setIsSearched(true)
         props.setResult(null)
         const params = { // 渡したいパラメータをJSON形式で書く
-            search: searchValue
+            search: props.searchValue
         };
         const query_params = new URLSearchParams(params)
         const requestOptions = {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         };
-        // fetch('http://localhost:3000/api?' + query_params, requestOptions)
         fetch('https://bpm-searcher.herokuapp.com/api?' + query_params, requestOptions)
             .then(response => response.json())
             .then(data => {
@@ -72,7 +70,7 @@ export default function SearchBox(props) {
                         className={classes.input}
                         placeholder="Search Songs or Artists"
                         inputProps={{ 'aria-label': 'search songs or artists' }}
-                        value={searchValue}
+                        value={props.searchValue}
                         onChange={handleSearchInputChanges}
                     />
                     <IconButton type="submit" className={classes.iconButton} onClick={getBpms} aria-label="search">
