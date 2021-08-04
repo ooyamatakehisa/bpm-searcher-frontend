@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
       [theme.breakpoints.up('sm')]: {
         display: 'block',
       },
+      cursor: 'pointer'
+    },
+    logo:{
+        cursor: 'pointer'
     },
     inputRoot: {
       color: 'inherit',
@@ -36,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar(props) {
     const classes = useStyles();
 
     const onClickGithub = () => {
@@ -44,7 +48,7 @@ export default function PrimarySearchAppBar() {
         window.open(url, '_blank')
     }
 
-
+    
     return (
         <div className={classes.grow}>
         <AppBar position="static">
@@ -57,10 +61,10 @@ export default function PrimarySearchAppBar() {
             >
                 <MenuIcon />
             </IconButton> */}
-            <Box pr={2}>
+            <Box pr={2} className={classes.logo} onClick={props.reset}>
                 <img src="./favicon.svg" height="25" />
             </Box>
-            <Typography className={classes.title} variant="h6" noWrap>
+            <Typography className={classes.title} variant="h6" noWrap onClick={props.reset}>
                 BPM Searcher
             </Typography>
             <div className={classes.grow} />
