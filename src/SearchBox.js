@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchBox(props) {
     const classes = useStyles();
+    const history = useHistory();
 
     const handleSearchInputChanges = (e) => {
         props.setSearchValue(e.target.value);
@@ -37,6 +39,10 @@ export default function SearchBox(props) {
 
 
     const getBpms = (e) => {
+        history.push({
+            pathname: "/",
+            search:  '?search=' + props.searchValue
+        })
         e.preventDefault()
         props.setIsSearched(true)
         props.setResult(null)
@@ -53,7 +59,8 @@ export default function SearchBox(props) {
             .then(data => {
                 console.log(data)
                 props.setResult(data)
-            });
+            }
+        );
     }
 
     return (
@@ -62,7 +69,7 @@ export default function SearchBox(props) {
             spacing={0}
             direction="column"
             alignItems="center"
-            justify="center"
+            justifyContent="center"
         >
             <Box p={4}>
                 <Paper component="form" className={classes.root}>
