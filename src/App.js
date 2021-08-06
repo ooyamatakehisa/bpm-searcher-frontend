@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+} from "react-router-dom";
+import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
 import SearchBox from './SearchBox'
-import AppDesc from './AppDesc'
 import SearchResult from './SearchResult'
 import Header from './Header'
 import Waiting from './Waiting'
-
-import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import SongDetail from './SongDetail'
 
 const theme = createTheme({
     palette: {
@@ -29,20 +34,23 @@ function App() {
 
     return (
         <MuiThemeProvider theme={ theme }>
-            <header>
+            <Router>
                 <Header reset={ reset }/>
-            </header>
-            <body>
-                <SearchBox
-                    setIsSearched={ setIsSearched }
-                    setResult={ setResult }
-                    searchValue={ searchValue }
-                    setSearchValue={ setSearchValue }
-                />
-                {/* {!isSearched && <AppDesc />} */}
-                {(isSearched && result === null) && <Waiting />}
-                {result !== null && <SearchResult result={ result }/>}
-            </body>
+                <Switch>
+                    <Route path="/" exact>
+                        <SearchBox
+                            setIsSearched={ setIsSearched }
+                            setResult={ setResult }
+                            searchValue={ searchValue }
+                            setSearchValue={ setSearchValue }
+                        />
+                        {/* {!isSearched && <AppDesc />} */}
+                        {(isSearched && result === null) && <Waiting />}
+                        {result !== null && <SearchResult result={ result }/>}
+                    </Route>
+                    <Route path="/:spotify_id" component={ SongDetail }/>
+                </Switch>
+            </Router>
         </MuiThemeProvider>
     );
 }

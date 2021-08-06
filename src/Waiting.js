@@ -10,7 +10,7 @@ export default function Waiting(props) {
             spacing={0}
             direction="column"
             alignItems="center"
-            justify="center"
+            justifyContent="center"
         >
             <CircularProgress />
         </Grid>

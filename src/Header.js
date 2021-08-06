@@ -5,8 +5,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import MenuIcon from '@material-ui/icons/Menu';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -42,13 +42,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PrimarySearchAppBar(props) {
     const classes = useStyles();
+    const history = useHistory();
 
-    const onClickGithub = () => {
+    function onClickGithub() {
         const url = 'https://github.com/ooyamatakehisa/bpm-searcher'
         window.open(url, '_blank')
     }
-
     
+    const onClickAppBar = () => {
+        props.reset()
+        history.push("/")
+    }
+
     return (
         <div className={classes.grow}>
         <AppBar position="static">
@@ -61,10 +66,10 @@ export default function PrimarySearchAppBar(props) {
             >
                 <MenuIcon />
             </IconButton> */}
-            <Box pr={2} className={classes.logo} onClick={props.reset}>
+            <Box pr={2} className={classes.logo} onClick={onClickAppBar}>
                 <img src="./favicon.svg" height="25" />
             </Box>
-            <Typography className={classes.title} variant="h6" noWrap onClick={props.reset}>
+            <Typography className={classes.title} variant="h6" noWrap onClick={onClickAppBar}>
                 BPM Searcher
             </Typography>
             <div className={classes.grow} />
