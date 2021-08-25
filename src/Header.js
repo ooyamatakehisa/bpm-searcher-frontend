@@ -56,30 +56,30 @@ export default function PrimarySearchAppBar(props) {
 
     return (
         <div className={classes.grow}>
-        <AppBar position="static">
-            <Toolbar>
-            {/* <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="open drawer"
-            >
-                <MenuIcon />
-            </IconButton> */}
-            <Box pr={2} className={classes.logo} onClick={onClickAppBar}>
-                <img src="./favicon.svg" height="25" />
-            </Box>
-            <Typography className={classes.title} variant="h6" noWrap onClick={onClickAppBar}>
-                BPM Searcher
-            </Typography>
-            <div className={classes.grow} />
+            <AppBar position="static">
+                <Toolbar>
+                {/* <IconButton
+                    edge="start"
+                    className={classes.menuButton}
+                    color="inherit"
+                    aria-label="open drawer"
+                >
+                    <MenuIcon />
+                </IconButton> */}
+                <Box pr={2} className={classes.logo} onClick={onClickAppBar}>
+                    <img src="./favicon.svg" height="25" />
+                </Box>
+                <Typography className={classes.title} variant="h6" noWrap onClick={onClickAppBar}>
+                    BPM Searcher
+                </Typography>
+                <div className={classes.grow} />
 
-            <IconButton aria-label="show 17 new notifications" color="inherit" onClick={onClickGithub}>
-                <GitHubIcon />
-            </IconButton>
+                <IconButton aria-label="show 17 new notifications" color="inherit" onClick={onClickGithub}>
+                    <GitHubIcon />
+                </IconButton>
 
-            </Toolbar>
-        </AppBar>
+                </Toolbar>
+            </AppBar>
         </div>
     );
 }
