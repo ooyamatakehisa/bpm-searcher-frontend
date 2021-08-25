@@ -31,20 +31,22 @@ export default function SearchBox(props) {
     
 
     return (
-        <Box width={1}  display="flex" justifyContent="center">
+        <Box width={1} display="flex" justifyContent="center">
             <Box width={0.85} justifyContent="center">
                 <TableContainer component={Paper}>
                     <Table  aria-label="simple table">
                         <TableHead>
                             <TableRow>
                                 <TableCell align="center">
-                                    <div>SONG</div>
+                                    <Typography variant="subtitle1" gutterBottom>SONG</Typography>
                                     {/* <div>ARTIST</div> */}
                                 </TableCell>
                                 <TableCell></TableCell>
                                 {/* <TableCell>ARTIST</TableCell> */}
                                 {/* <TableCell>ALBUM</TableCell> */}
-                                <TableCell>BPM</TableCell>
+                                <TableCell width="30%" align="center">
+                                    <Typography variant="subtitle1" gutterBottom>BPM</Typography>
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -63,7 +65,9 @@ export default function SearchBox(props) {
                                     </TableCell>
                                     {/* <TableCell>{row.artist}</TableCell> */}
                                     {/* <TableCell>{row.album_name}</TableCell> */}
-                                    <TableCell><Typography>{row.bpm}</Typography></TableCell>
+                                    <TableCell align="center">
+                                        <Typography variant="h5" gutterBottom>{Math.round(row.bpm)}</Typography>
+                                    </TableCell>
                                 {/* </Link> */}
                             </TableRow>
                         ))}
