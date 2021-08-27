@@ -22,8 +22,14 @@ const theme = createTheme({
             main: "#a0a0a0",
             contrastText: '#a0a0a0',
         }
+    },
+    typography: {
+        fontFamily: [
+          'Lato',
+          'Raleway',
+        ].join(','),
     }
-});
+})
 
 function App() {
     const [isSearched, setIsSearched] = useState(false);
