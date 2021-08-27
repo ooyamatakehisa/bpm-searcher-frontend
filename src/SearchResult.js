@@ -60,7 +60,11 @@ export default function SearchBox(props) {
                                         <img src={row.image_url} height="100"/>
                                     </TableCell>
                                     <TableCell>
-                                        <Typography>{row.song_name}</Typography>
+                                        <Typography variant="h6">
+                                            <Box fontWeight="fontWeightMedium">
+                                            {row.song_name}
+                                            </Box>
+                                        </Typography>
                                         <div>{row.artist}</div>
                                     </TableCell>
                                     {/* <TableCell>{row.artist}</TableCell> */}

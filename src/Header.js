@@ -7,6 +7,14 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import { useHistory } from 'react-router-dom';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: [
+      'Bowlby One SC',
+    ].join(','),
+  },});
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -69,9 +77,11 @@ export default function PrimarySearchAppBar(props) {
                 <Box pr={2} className={classes.logo} onClick={onClickAppBar}>
                     <img src="./favicon.svg" height="25" />
                 </Box>
-                <Typography className={classes.title} variant="h6" noWrap onClick={onClickAppBar}>
+                <ThemeProvider theme={theme}>
+                <Typography className={classes.title} variant="h5" noWrap onClick={onClickAppBar}>
                     BPM Searcher
                 </Typography>
+                </ThemeProvider>
                 <div className={classes.grow} />
 
                 <IconButton aria-label="show 17 new notifications" color="inherit" onClick={onClickGithub}>
