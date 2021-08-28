@@ -57,6 +57,8 @@ export default function SongDetail(props) {
                                     <code>audio</code> element.
                             </audio>
                         </Grid>
+                    </Grid>
+                    <Grid container spacing={3}>
                         <Grid item xs={6} align="center">
                             <Card>
                                 <Box p={3}>

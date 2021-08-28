@@ -51,28 +51,21 @@ export default function SearchBox(props) {
                         </TableHead>
                         <TableBody>
                         {props.result.map((row) => (
-                            <TableRow key={row.bpm} onClick={() => handleLink(row.song_name, row)} className={classes.row}>
-                                {/* <Link to={{
-                                    pathname:'/' + row.song_name,
-                                    state: { test: 'test-state' }
-                                }}> */}
-                                    <TableCell align="center">
-                                        <img src={row.image_url} height="100"/>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography variant="h6">
-                                            <Box fontWeight="fontWeightMedium">
-                                            {row.song_name}
-                                            </Box>
-                                        </Typography>
-                                        <div>{row.artist}</div>
-                                    </TableCell>
-                                    {/* <TableCell>{row.artist}</TableCell> */}
-                                    {/* <TableCell>{row.album_name}</TableCell> */}
-                                    <TableCell align="center">
-                                        <Typography variant="h5" gutterBottom>{Math.round(row.bpm)}</Typography>
-                                    </TableCell>
-                                {/* </Link> */}
+                            <TableRow key={row.spotify_id} onClick={() => handleLink(row.spotify_id, row)} className={classes.row}>
+                                <TableCell align="center">
+                                    <img src={row.image_url} height="100"/>
+                                </TableCell>
+                                <TableCell>
+                                    <Typography variant="h6">
+                                        <Box fontWeight="fontWeightMedium">
+                                        {row.song_name}
+                                        </Box>
+                                    </Typography>
+                                    <div>{row.artist}</div>
+                                </TableCell>
+                                <TableCell align="center">
+                                    <Typography variant="h5" gutterBottom>{Math.round(row.bpm)}</Typography>
+                                </TableCell>
                             </TableRow>
                         ))}
                         </TableBody>
