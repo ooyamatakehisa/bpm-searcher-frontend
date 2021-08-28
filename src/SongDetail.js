@@ -2,9 +2,9 @@ import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { useLocation } from 'react-router-dom';
-import { Grid, Paper, Typography, Box } from '@material-ui/core';
-import { CallMissedSharp } from '@material-ui/icons';
-
+import { Grid, Card, Typography, Box } from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faDrum, faGuitar } from '@fortawesome/free-solid-svg-icons'
 
 const useStyles = makeStyles((theme) => ({
     image:{
@@ -17,8 +17,6 @@ const useStyles = makeStyles((theme) => ({
         shadowRadius: 60,
     },
     root: {
-        // minWidth: "100%",
-        // minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center"
@@ -48,7 +46,6 @@ export default function SongDetail(props) {
                                 <Typography variant="h5" color="secondary">
                                     {data.artist}
                                 </Typography>
-                                <br/>
                                 <Typography variant="h4">
                                     {data.song_name}
                                 </Typography>
@@ -60,12 +57,31 @@ export default function SongDetail(props) {
                                     <code>audio</code> element.
                             </audio>
                         </Grid>
-                        <Grid item xs={12}>
-                            bpm: {data.bpm}<br/>
-                            key: {data.key}<br/>
+                        <Grid item xs={6} align="center">
+                            <Card>
+                                <Box p={3}>
+                                    <FontAwesomeIcon size="3x" icon={faDrum}/>
+                                    <Box p={1}>
+                                        <Typography variant="h5" color="secondary">BPM</Typography>
+                                    </Box>
+                                    <Typography variant="h4">
+                                        {Math.round(data.bpm)}
+                                    </Typography>
+                                </Box>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={6} align="center">
+                            <Card>
+                                <Box p={3}>
+                                    <FontAwesomeIcon size="3x" icon={faGuitar}/>
+                                    <Box p={1}>
+                                        <Typography variant="h5" color="secondary">KEY</Typography>
+                                    </Box>
+                                    <Typography variant="h4">{data.key}</Typography>
+                                </Box>
+                            </Card>
                         </Grid>
                     </Grid>
-                    
                 </Box>
             </Box>
         </div>
