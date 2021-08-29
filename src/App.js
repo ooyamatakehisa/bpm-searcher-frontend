@@ -11,6 +11,7 @@ import SearchResult from './SearchResult'
 import Header from './Header'
 import Waiting from './Waiting'
 import SongDetail from './SongDetail'
+import NoResult from './NoResult'
 
 const theme = createTheme({
     palette: {
@@ -33,8 +34,10 @@ const theme = createTheme({
 
 function App() {
     const [isSearched, setIsSearched] = useState(false);
-    const [result, setResult] = useState(null);
+    const [isResponded, setIsResponded] = useState(false);
+    const [result, setResult] = useState([]);
     const [searchValue, setSearchValue] = useState("");
+    const [inputValue, setInputValue] = useState("");
 
     const reset = () => {
         setIsSearched(false)
@@ -50,13 +53,17 @@ function App() {
                     <Route path="/" exact>
                         <SearchBox
                             setIsSearched={ setIsSearched }
+                            setIsResponded={ setIsResponded }
                             setResult={ setResult }
+                            inputValue={ inputValue }
+                            setInputValue={ setInputValue }
                             searchValue={ searchValue }
                             setSearchValue={ setSearchValue }
                         />
                         {/* {!isSearched && <AppDesc />} */}
-                        {(isSearched && result === null) && <Waiting />}
-                        {result !== null && <SearchResult result={ result }/>}
+                        {(isSearched && !isResponded) && <Waiting />}
+                        {isResponded && result.length !== 0 && <SearchResult result={ result }/>}
+                        {isResponded && result.length === 0 && <NoResult searchValue={ searchValue }/>}
                     </Route>
                     <Route path="/:spotify_id" component={ SongDetail }/>
                 </Switch>
