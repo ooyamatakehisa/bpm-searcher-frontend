@@ -34,33 +34,42 @@ export default function SearchBox(props) {
     const history = useHistory();
 
     const handleSearchInputChanges = (e) => {
-        props.setSearchValue(e.target.value);
+        props.setInputValue(e.target.value);
     }
 
 
     const getBpms = (e) => {
-        history.push({
-            pathname: "/",
-            search:  '?search=' + props.searchValue
-        })
+
         e.preventDefault()
         props.setIsSearched(true)
-        props.setResult(null)
+        props.setIsResponded(false)
+        props.setResult([])
+        props.setSearchValue(props.inputValue)
+
+        history.push({
+            pathname: "/",
+            search:  '?search=' + props.inputValue
+        })
+
         const params = { // 渡したいパラメータをJSON形式で書く
-            search: props.searchValue
+            search: props.inputValue
         };
         const query_params = new URLSearchParams(params)
         const requestOptions = {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         };
+
         fetch('https://bpm-searcher.herokuapp.com/api?' + query_params, requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
+            .then(response => {
+                props.setIsResponded(true)
+                if (response.status === 404) {
+                    props.setResult([])
+                    throw new Error(response.statusText);
+                } else { return response.json() }
+            }).then(data => {
                 props.setResult(data)
-            }
-        );
+            }).catch(err => console.log(err))
     }
 
     return (
@@ -77,7 +86,7 @@ export default function SearchBox(props) {
                         className={classes.input}
                         placeholder="Search Songs or Artists"
                         inputProps={{ 'aria-label': 'search songs or artists' }}
-                        value={props.searchValue}
+                        value={props.inputValue}
                         onChange={handleSearchInputChanges}
                     />
                     <IconButton type="submit" className={classes.iconButton} onClick={getBpms} aria-label="search">

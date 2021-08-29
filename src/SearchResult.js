@@ -39,11 +39,8 @@ export default function SearchBox(props) {
                             <TableRow>
                                 <TableCell align="center">
                                     <Typography variant="subtitle1" gutterBottom>SONG</Typography>
-                                    {/* <div>ARTIST</div> */}
                                 </TableCell>
                                 <TableCell></TableCell>
-                                {/* <TableCell>ARTIST</TableCell> */}
-                                {/* <TableCell>ALBUM</TableCell> */}
                                 <TableCell width="30%" align="center">
                                     <Typography variant="subtitle1" gutterBottom>BPM</Typography>
                                 </TableCell>
