@@ -62,13 +62,16 @@ export default function SearchBox(props) {
 
         fetch('https://bpm-searcher.herokuapp.com/api?' + query_params, requestOptions)
             .then(response => {
-                props.setIsResponded(true)
                 if (response.status === 404) {
                     props.setResult([])
+                    props.setIsResponded(true)
                     throw new Error(response.statusText);
-                } else { return response.json() }
+                } else {
+                    return response.json()
+                }
             }).then(data => {
                 props.setResult(data)
+                props.setIsResponded(true)
             }).catch(err => console.log(err))
     }
 

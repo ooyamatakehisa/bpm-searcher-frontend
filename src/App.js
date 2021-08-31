@@ -41,7 +41,8 @@ function App() {
 
     const reset = () => {
         setIsSearched(false)
-        setResult(null)
+        setIsResponded(false)
+        setResult([])
         setSearchValue("")
     }
 
