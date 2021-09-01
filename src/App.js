@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     BrowserRouter as Router,
     Switch,
@@ -36,6 +36,7 @@ function App() {
     const [isSearched, setIsSearched] = useState(false);
     const [isResponded, setIsResponded] = useState(false);
     const [result, setResult] = useState([]);
+    const [ranking, setRanking] = useState([]);
     const [searchValue, setSearchValue] = useState("");
     const [inputValue, setInputValue] = useState("");
 
@@ -46,6 +47,14 @@ function App() {
         setSearchValue("")
     }
 
+    useEffect(()=>{
+        fetch('https://bpm-searcher.herokuapp.com/api/ranking')
+            .then(response => response.json())
+            .then(data => {
+                setRanking(data)
+            }).catch(err => console.log(err))
+      },[])
+    
     return (
         <MuiThemeProvider theme={ theme }>
             <Router>
@@ -61,9 +70,23 @@ function App() {
                             searchValue={ searchValue }
                             setSearchValue={ setSearchValue }
                         />
-                        {/* {!isSearched && <AppDesc />} */}
-                        {(isSearched && !isResponded) && <Waiting />}
-                        {isResponded && result.length !== 0 && <SearchResult result={ result }/>}
+                        {!isSearched &&
+                            <SearchResult
+                                result={ ranking }
+                                ranking={ true }
+                                title={"spotify top charts"}
+                            />
+                        }
+                        {isSearched && !isResponded && 
+                            <Waiting />
+                        }
+                        {isResponded && result.length !== 0 &&
+                            <SearchResult
+                                result={ result }
+                                ranking={ false }
+                                title={"search results for " + searchValue}
+                            />
+                        }
                         {isResponded && result.length === 0 && <NoResult searchValue={ searchValue }/>}
                     </Route>
                     <Route path="/:spotify_id" component={ SongDetail }/>
