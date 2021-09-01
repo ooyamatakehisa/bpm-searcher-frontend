@@ -28,11 +28,14 @@ export default function SearchBox(props) {
     const handleLink = (path, row) => {
         history.push(path, { data: row });
     }
-    
+    let i = 1
 
     return (
         <Box width={1} display="flex" justifyContent="center">
             <Box width={0.85} justifyContent="center">
+                <Box m={2}>
+                    <Typography variant="h5">{props.title}</Typography>
+                </Box>
                 <TableContainer component={Paper}>
                     <Table  aria-label="simple table">
                         <TableHead>
@@ -40,6 +43,9 @@ export default function SearchBox(props) {
                                 <TableCell align="center">
                                     <Typography variant="subtitle1" gutterBottom>SONG</Typography>
                                 </TableCell>
+                                {props.ranking && <TableCell align="center">
+                                    <Typography variant="subtitle1" gutterBottom></Typography>
+                                </TableCell>}
                                 <TableCell></TableCell>
                                 <TableCell width="30%" align="center">
                                     <Typography variant="subtitle1" gutterBottom>BPM</Typography>
@@ -52,6 +58,9 @@ export default function SearchBox(props) {
                                 <TableCell align="center">
                                     <img src={row.image_url} height="100"/>
                                 </TableCell>
+                                {props.ranking && <TableCell align="center">
+                                    <Typography variant="h6" gutterBottom>{i++}</Typography>
+                                </TableCell>}
                                 <TableCell>
                                     <Typography variant="h6">
                                         <Box fontWeight="fontWeightMedium">
