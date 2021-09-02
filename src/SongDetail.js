@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { Grid, Card, Typography, Box } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDrum, faGuitar, faHeadphones, faCompactDisc } from '@fortawesome/free-solid-svg-icons'
-import { KEY_DICT } from './constant';
+import { KEY_DICT, MODE_DICT } from './constant';
 
 const useStyles = makeStyles((theme) => ({
     image:{
@@ -78,7 +78,9 @@ export default function SongDetail(props) {
                                     <Box p={1}>
                                         <Typography variant="h5" color="secondary">KEY</Typography>
                                     </Box>
-                                    <Typography variant="h4">{KEY_DICT[data.key]}</Typography>
+                                    <Typography variant="h4">
+                                        {KEY_DICT[data.key]} {MODE_DICT[data.mode]}
+                                    </Typography>
                                 </Box>
                             </Card>
                         </Grid>
