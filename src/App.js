@@ -48,7 +48,7 @@ function App() {
     }
 
     useEffect(()=>{
-        fetch('https://bpm-searcher.herokuapp.com/api/ranking')
+        fetch('https://bpm-searcher.herokuapp.com/api/v1/ranking')
             .then(response => response.json())
             .then(data => {
                 setRanking(data)

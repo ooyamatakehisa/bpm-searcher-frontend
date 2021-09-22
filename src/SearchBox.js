@@ -60,7 +60,7 @@ export default function SearchBox(props) {
             headers: { 'Content-Type': 'application/json' },
         };
 
-        fetch('https://bpm-searcher.herokuapp.com/api?' + query_params, requestOptions)
+        fetch('https://bpm-searcher.herokuapp.com/api/v1/track?' + query_params, requestOptions)
             .then(response => {
                 if (response.status === 404) {
                     props.setResult([])
