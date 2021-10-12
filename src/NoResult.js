@@ -13,12 +13,14 @@ export default function NoResult(props) {
             alignItems="center"
             justifyContent="center"
         >
-            <Box p={5}>
+            <Box p={6}>
                 <FontAwesomeIcon size="5x" icon={faMicrophoneAltSlash}/>
             </Box>
-            <Typography variant="h6">
-                No results found for <b>{props.searchValue}</b>
-            </Typography>
+            <Box pb={10}>
+                <Typography variant="h6">
+                    No results found for <b>{props.searchValue}</b>
+                </Typography>
+            </Box>
         </Grid>
     );
 }
