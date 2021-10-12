@@ -91,6 +91,7 @@ function App() {
                     </Route>
                     <Route path="/:spotify_id" component={ SongDetail }/>
                 </Switch>
+                <Footer />
             </Router>
         </MuiThemeProvider>
     );
