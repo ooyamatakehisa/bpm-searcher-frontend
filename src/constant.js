@@ -17,3 +17,5 @@ export const MODE_DICT = [
     "Minor",
     "Major"
 ]
+
+export const APP_NAME = "BPM Searcher"

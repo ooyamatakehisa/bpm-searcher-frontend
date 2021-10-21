@@ -1,100 +1,136 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-} from "react-router-dom";
-import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
+  createTheme,
+  ThemeProvider,
+  StyledEngineProvider,
+} from "@mui/material/styles";
+import firebase from "firebase";
 
-import SearchBox from './SearchBox'
-import SearchResult from './SearchResult'
-import Header from './Header'
-import Waiting from './Waiting'
-import SongDetail from './SongDetail'
-import NoResult from './NoResult'
+import Header from "./Header";
+import SongDetail from "./SongDetail";
+import Footer from "./Footer";
+import SignInDialog from "./SignInDialog";
+import Content from "./Content";
+import Ranking from "./Ranking";
+import Playlist from "./Playlist";
+import MySnackbar from "./MySnackbar";
+import DraggableTable from "./DraggableTable";
 
 const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#da0047',
-            contrastText: '#fff',
-        },
-        secondary: {
-            main: "#a0a0a0",
-            contrastText: '#a0a0a0',
-        }
+  palette: {
+    primary: {
+      main: "#da0047",
+      contrastText: "#fff",
     },
-    typography: {
-        fontFamily: [
-          'Lato',
-          'Raleway',
-        ].join(','),
-    }
-})
+    secondary: {
+      main: "#ffffff",
+      contrastText: "#a0a0a0",
+    },
+    textSecondary: {
+      main: "#a0a0a0",
+      contrastText: "#a0a0a0",
+    },
+  },
+  typography: {
+    fontFamily: ["Lato", "Raleway"].join(","),
+  },
+});
+
+export const themeLogo = createTheme({
+  palette: {
+    primary: {
+      main: "#da0047",
+      contrastText: "#fff",
+    },
+  },
+  typography: {
+    fontFamily: ["Bowlby One SC"].join(","),
+  },
+});
 
 function App() {
-    const [isSearched, setIsSearched] = useState(false);
-    const [isResponded, setIsResponded] = useState(false);
-    const [result, setResult] = useState([]);
-    const [ranking, setRanking] = useState([]);
-    const [searchValue, setSearchValue] = useState("");
-    const [inputValue, setInputValue] = useState("");
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [user, setUser] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [signInDialogOpen, setSignInDialogOpen] = React.useState(false);
 
-    const reset = () => {
-        setIsSearched(false)
-        setIsResponded(false)
-        setResult([])
-        setSearchValue("")
-    }
+  const signOut = () => {
+    setSnackbarOpen(true);
+    firebase.auth().signOut();
+  };
 
-    useEffect(()=>{
-        fetch('https://bpm-searcher.herokuapp.com/api/v1/ranking')
-            .then(response => response.json())
-            .then(data => {
-                setRanking(data)
-            }).catch(err => console.log(err))
-      },[])
-    
-    return (
-        <MuiThemeProvider theme={ theme }>
-            <Router>
-                <Header reset={ reset }/>
-                <Switch>
-                    <Route path="/" exact>
-                        <SearchBox
-                            setIsSearched={ setIsSearched }
-                            setIsResponded={ setIsResponded }
-                            setResult={ setResult }
-                            inputValue={ inputValue }
-                            setInputValue={ setInputValue }
-                            searchValue={ searchValue }
-                            setSearchValue={ setSearchValue }
-                        />
-                        {!isSearched &&
-                            <SearchResult
-                                result={ ranking }
-                                ranking={ true }
-                                title={"spotify top charts"}
-                            />
-                        }
-                        {isSearched && !isResponded && 
-                            <Waiting />
-                        }
-                        {isResponded && result.length !== 0 &&
-                            <SearchResult
-                                result={ result }
-                                ranking={ false }
-                                title={"search results for " + searchValue}
-                            />
-                        }
-                        {isResponded && result.length === 0 && <NoResult searchValue={ searchValue }/>}
-                    </Route>
-                    <Route path="/:spotify_id" component={ SongDetail }/>
-                </Switch>
-                <Footer />
-            </Router>
-        </MuiThemeProvider>
-    );
+  const closeSignInDialog = () => {
+    setSignInDialogOpen(false);
+  };
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        setSnackbarOpen(true);
+        setIsSignedIn(true);
+        setUser(user);
+      } else {
+        setIsSignedIn(false);
+        setUser({});
+      }
+    });
+  }, []);
+
+  return (
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <Header
+            // reset={reset}
+            isSignedIn={isSignedIn}
+            user={user}
+            setSignInDialogOpen={() => setSignInDialogOpen(true)}
+            signOut={signOut}
+          />
+          <Switch>
+            <Route path="/" exact>
+              <Ranking
+                isSignedIn={isSignedIn}
+                setSignInDialogOpen={() => setSignInDialogOpen(true)}
+              />
+            </Route>
+            <Route path="/track" exact>
+              <Content
+                isSignedIn={isSignedIn}
+                setSignInDialogOpen={() => setSignInDialogOpen(true)}
+              />
+            </Route>
+            <Route path="/user/:uid/playlist" exact>
+              <Playlist
+                isSignedIn={isSignedIn}
+                setSignInDialogOpen={() => setSignInDialogOpen(true)}
+              />
+            </Route>
+            <Route path="/user/:uid/playlist/:playlistId">
+              <DraggableTable
+                isSignedIn={isSignedIn}
+                setSignInDialogOpen={() => setSignInDialogOpen(true)}
+              />
+            </Route>
+            <Route path="/track/:spotify_id">
+              <SongDetail />
+            </Route>
+          </Switch>
+        </Router>
+        <Footer />
+        <MySnackbar
+          snackbarOpen={snackbarOpen}
+          setSnackbarOpen={setSnackbarOpen}
+          message={isSignedIn ? "Sign In !" : "Sign Out !"}
+        />
+        <SignInDialog
+          signInDialogOpen={signInDialogOpen}
+          closeSignInDialog={closeSignInDialog}
+        />
+      </ThemeProvider>
+    </StyledEngineProvider>
+  );
 }
 
 export default App;
