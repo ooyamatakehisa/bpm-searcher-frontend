@@ -1,19 +1,18 @@
-import React from 'react';
-import { CircularProgress, Grid, Box } from '@material-ui/core';
+import React from "react";
+import { CircularProgress, Grid, Box } from "@mui/material";
 
-
-export default function Waiting(props) {
-    return (
-        <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-        >
-            <Box p={16}>
-                <CircularProgress />
-            </Box>
-        </Grid>
-    );
+export default function Waiting() {
+  return (
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Box p={20}>
+        <CircularProgress />
+      </Box>
+    </Grid>
+  );
 }
