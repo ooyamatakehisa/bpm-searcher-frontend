@@ -19,3 +19,4 @@ export const MODE_DICT = [
 ]
 
 export const APP_NAME = "BPM Searcher"
+export const DOMAIN = "bpm-searcher.herokuapp.com"
