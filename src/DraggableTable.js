@@ -72,7 +72,7 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
       };
       axios
         .delete(
-          `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist/${playlistTrack.id}`,
+          `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist/${playlistId}/track/${playlistTrack.id}`,
           config
         )
         .then((data) => {
