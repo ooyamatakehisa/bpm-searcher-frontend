@@ -107,7 +107,7 @@ export default function SearchBox({
         body = { kind: "track", spotify_id: clickedTrack.spotify_id };
         axios
           .put(
-            `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist`,
+            `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist/${playlist_id}`,
             body,
             config
           )
@@ -157,7 +157,7 @@ export default function SearchBox({
       };
       axios
         .put(
-          `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist`,
+          `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist/${playlist_id}`,
           body,
           config
         )
