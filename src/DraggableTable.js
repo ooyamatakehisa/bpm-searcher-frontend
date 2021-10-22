@@ -144,7 +144,6 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
                     alt={playlistInfo.name}
                   />
                 </Box>
-                {/* <Typography variant="h6">{data.album_name}</Typography> */}
               </Grid>
               <Grid item xs={12} sm={6} className={classes.root}>
                 <Typography variant="h4">{playlistInfo.name}</Typography>
@@ -212,18 +211,9 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
                                   {...draggableProvided.draggableProps}
                                   style={{
                                     ...draggableProvided.draggableProps.style,
-                                    // normal: {
-                                    //   background: snapshot.isDragging
-                                    //   ? "rgba(245,245,245, 0.75)"
-                                    //   : "none",
-                                    // },
-                                    // "&:hover, &:focus": {
-                                    //   backgroundColor: "#ececec",
-                                    // },
                                     cursor: "pointer",
                                   }}
                                 >
-                                  {/* note: `snapshot.isDragging` is useful to style or modify behaviour of dragged cells */}
                                   <TableCell align="center">
                                     <div {...draggableProvided.dragHandleProps}>
                                       <Reorder />
