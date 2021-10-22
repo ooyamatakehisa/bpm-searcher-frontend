@@ -49,7 +49,7 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
         };
         axios
           .get(
-            `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist`,
+            `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist/${playlistId}`,
             config
           )
           .then((data) => {
@@ -72,7 +72,7 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
       };
       axios
         .delete(
-          `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist`,
+          `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist/${playlistTrack.id}`,
           config
         )
         .then((data) => {
@@ -309,4 +309,4 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
       />
     </Box>
   );
-};
+}
