@@ -5,6 +5,7 @@ import NoResult from "./NoResult";
 import Waiting from "./Waiting";
 import SearchBox from "./SearchBox";
 import SearchResult from "./SearchResult";
+import { API_BASE_URL } from "./constant";
 
 export default function Content({ isSignedIn, setSignInDialogOpen }) {
   const [searchValue, setSearchValue] = useState("");
@@ -22,7 +23,7 @@ export default function Content({ isSignedIn, setSignInDialogOpen }) {
     };
 
     fetch(
-      `https://bpm-searcher.herokuapp.com/api/v1/track?search=${query.get(
+      `${API_BASE_URL}/track?search=${query.get(
         "search"
       )}`,
       requestOptions

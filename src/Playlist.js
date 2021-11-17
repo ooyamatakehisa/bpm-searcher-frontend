@@ -28,10 +28,7 @@ export default function Playlist({ isSignedIn, setSignInDialogOpen }) {
           headers: { Authorization: `Bearer ${id_token}` },
         };
         axios
-          .get(
-            `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist`,
-            config
-          )
+          .get(`${API_BASE_URL}/user/${user.uid}/playlist`, config)
           .then((data) => {
             setPlaylistInfos(data.data);
           })

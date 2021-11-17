@@ -27,6 +27,7 @@ import axios from "axios";
 import firebase from "firebase";
 
 import Snackbar from "./MySnackbar";
+import { API_BASE_URL } from "./constant";
 
 const useStyles = makeStyles({
   row: {
@@ -91,7 +92,7 @@ export default function SearchBox({
       };
       try {
         const data = await axios.post(
-          `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist`,
+          `${API_BASE_URL}/user/${user.uid}/playlist`,
           body,
           config
         );
@@ -107,7 +108,7 @@ export default function SearchBox({
         body = { kind: "track", spotify_id: clickedTrack.spotify_id };
         axios
           .put(
-            `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist/${playlist_id}`,
+            `${API_BASE_URL}/user/${user.uid}/playlist/${playlist_id}`,
             body,
             config
           )
@@ -133,7 +134,7 @@ export default function SearchBox({
         };
         axios
           .get(
-            `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist`,
+            `${API_BASE_URL}/user/${user.uid}/playlist`,
             config
           )
           .then((data) => {
@@ -157,7 +158,7 @@ export default function SearchBox({
       };
       axios
         .put(
-          `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist/${playlist_id}`,
+          `${API_BASE_URL}/user/${user.uid}/playlist/${playlist_id}`,
           body,
           config
         )
