@@ -20,7 +20,7 @@ import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
 import makeStyles from "@mui/styles/makeStyles";
 
 import { themeLogo } from "./App";
-import { APP_NAME, DOMAIN } from "./constant";
+import { APP_NAME, BASE_URL } from "./constant";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -92,7 +92,7 @@ export default function Header(props) {
       <AppBar position="static">
         <Toolbar>
           <Box pr={2} className={classes.logo} onClick={onClickAppBar}>
-            <img src={`https://${DOMAIN}/favicon.svg`} height="25" alt="Logo" />
+            <img src={`${BASE_URL}/favicon.svg`} height="25" alt="Logo" />
           </Box>
           <StyledEngineProvider injectFirst>
             <ThemeProvider theme={themeLogo}>
