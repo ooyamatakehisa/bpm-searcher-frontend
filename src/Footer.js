@@ -12,7 +12,7 @@ import {
 import makeStyles from "@mui/styles/makeStyles";
 
 import { themeLogo } from "./App";
-import { APP_NAME, DOMAIN } from "./constant";
+import { APP_NAME, BASE_URL } from "./constant";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
@@ -39,7 +39,7 @@ export default function Footer() {
           spacing={2}
         >
           <Grid item xs={12}>
-            <img src={`https://${DOMAIN}/favicon.svg`} height="25" alt="logo" />
+            <img src={`${BASE_URL}/favicon.svg`} height="25" alt="logo" />
           </Grid>
           <Grid item xs={12}>
             <StyledEngineProvider injectFirst>

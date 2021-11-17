@@ -20,6 +20,7 @@ import firebase from "firebase";
 import axios from "axios";
 
 import Snackbar from "./MySnackbar";
+import { API_BASE_URL } from "./constant";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +50,7 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
         };
         axios
           .get(
-            `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist/${playlistId}`,
+            `${API_BASE_URL}/user/${user.uid}/playlist/${playlistId}`,
             config
           )
           .then((data) => {
@@ -72,7 +73,7 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
       };
       axios
         .delete(
-          `https://bpm-searcher.herokuapp.com/api/v1/user/${user.uid}/playlist/${playlistId}/track/${playlistTrack.id}`,
+          `${API_BASE_URL}/user/${user.uid}/playlist/${playlistId}/track/${playlistTrack.id}`,
           config
         )
         .then((data) => {
