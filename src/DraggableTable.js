@@ -112,12 +112,37 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
 
     setplaylistTracks((prev) => {
       const temp = [...prev];
-      const d = temp[result.destination.index];
-      temp[result.destination.index] = temp[result.source.index];
-      temp[result.source.index] = d;
+      const sourceIdx = result.source.index;
+      const destinationIdx = result.destination.index;
+      temp.splice(sourceIdx, 1);
+      temp.splice(destinationIdx, 0, prev[sourceIdx]);
+
+      setPlaylistInfo((prev) => {
+        prev.image_url = temp[0].track.image_url;
+        return prev;
+      });
 
       return temp;
     });
+
+    (async () => {
+      const user = firebase.auth().currentUser;
+      const id_token = await user.getIdToken(false);
+      const config = {
+        headers: { Authorization: `Bearer ${id_token}` },
+      };
+      const body = {
+        orderFrom: result.source.index + 1,
+        orderTo: result.destination.index + 1,
+      };
+      axios
+        .patch(
+          `${API_BASE_URL}/user/${user.uid}/playlist/${playlistId}/track`,
+          body,
+          config
+        )
+        .catch((err) => console.log(err));
+    })();
   };
 
   const datetime2date = (datetime) => {
