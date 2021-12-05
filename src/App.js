@@ -5,6 +5,7 @@ import {
   ThemeProvider,
   StyledEngineProvider,
 } from "@mui/material/styles";
+import { makeStyles } from "@mui/styles";
 import firebase from "firebase";
 
 import Header from "./Header";
@@ -49,7 +50,20 @@ export const themeLogo = createTheme({
   },
 });
 
+const useStyles = makeStyles((theme) => ({
+  pageContainer: {
+    display: "flex",
+    flexDirection: "column",
+    minHeight: "100vh",
+
+  },
+  contentWrap: {
+    flex: 1
+  }
+}));
+
 function App() {
+  const classes = useStyles();
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [user, setUser] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -80,54 +94,58 @@ function App() {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <Router>
-          <Header
-            // reset={reset}
-            isSignedIn={isSignedIn}
-            user={user}
-            setSignInDialogOpen={() => setSignInDialogOpen(true)}
-            signOut={signOut}
+        <div className={classes.pageContainer}>
+          <div className={classes.contentWrap}>
+            <Router>
+              <Header
+                // reset={reset}
+                isSignedIn={isSignedIn}
+                user={user}
+                setSignInDialogOpen={() => setSignInDialogOpen(true)}
+                signOut={signOut}
+              />
+              <Switch>
+                <Route path="/" exact>
+                  <Ranking
+                    isSignedIn={isSignedIn}
+                    setSignInDialogOpen={() => setSignInDialogOpen(true)}
+                  />
+                </Route>
+                <Route path="/track" exact>
+                  <Content
+                    isSignedIn={isSignedIn}
+                    setSignInDialogOpen={() => setSignInDialogOpen(true)}
+                  />
+                </Route>
+                <Route path="/user/:uid/playlist" exact>
+                  <Playlist
+                    isSignedIn={isSignedIn}
+                    setSignInDialogOpen={() => setSignInDialogOpen(true)}
+                  />
+                </Route>
+                <Route path="/user/:uid/playlist/:playlistId">
+                  <DraggableTable
+                    isSignedIn={isSignedIn}
+                    setSignInDialogOpen={() => setSignInDialogOpen(true)}
+                  />
+                </Route>
+                <Route path="/track/:spotify_id">
+                  <SongDetail />
+                </Route>
+              </Switch>
+            </Router>
+          </div>
+          <Footer />
+          <MySnackbar
+            snackbarOpen={snackbarOpen}
+            setSnackbarOpen={setSnackbarOpen}
+            message={isSignedIn ? "Sign In !" : "Sign Out !"}
           />
-          <Switch>
-            <Route path="/" exact>
-              <Ranking
-                isSignedIn={isSignedIn}
-                setSignInDialogOpen={() => setSignInDialogOpen(true)}
-              />
-            </Route>
-            <Route path="/track" exact>
-              <Content
-                isSignedIn={isSignedIn}
-                setSignInDialogOpen={() => setSignInDialogOpen(true)}
-              />
-            </Route>
-            <Route path="/user/:uid/playlist" exact>
-              <Playlist
-                isSignedIn={isSignedIn}
-                setSignInDialogOpen={() => setSignInDialogOpen(true)}
-              />
-            </Route>
-            <Route path="/user/:uid/playlist/:playlistId">
-              <DraggableTable
-                isSignedIn={isSignedIn}
-                setSignInDialogOpen={() => setSignInDialogOpen(true)}
-              />
-            </Route>
-            <Route path="/track/:spotify_id">
-              <SongDetail />
-            </Route>
-          </Switch>
-        </Router>
-        <Footer />
-        <MySnackbar
-          snackbarOpen={snackbarOpen}
-          setSnackbarOpen={setSnackbarOpen}
-          message={isSignedIn ? "Sign In !" : "Sign Out !"}
-        />
-        <SignInDialog
-          signInDialogOpen={signInDialogOpen}
-          closeSignInDialog={closeSignInDialog}
-        />
+          <SignInDialog
+            signInDialogOpen={signInDialogOpen}
+            closeSignInDialog={closeSignInDialog}
+          />
+        </div>
       </ThemeProvider>
     </StyledEngineProvider>
   );
