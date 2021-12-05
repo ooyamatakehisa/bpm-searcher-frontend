@@ -133,10 +133,7 @@ export default function SearchBox({
           headers: { Authorization: `Bearer ${id_token}` },
         };
         axios
-          .get(
-            `${API_BASE_URL}/user/${user.uid}/playlist`,
-            config
-          )
+          .get(`${API_BASE_URL}/user/${user.uid}/playlist`, config)
           .then((data) => {
             setPlaylistInfos(data.data);
           })
@@ -174,7 +171,7 @@ export default function SearchBox({
 
   return (
     <Box width={1} display="flex" justifyContent="center">
-      <Box width={0.8} justifyContent="center">
+      <Box width={{ xs: 0.9, sm: 0.8, xl: 0.5 }} justifyContent="center">
         <Box m={2}>
           <Typography variant="h5">{title}</Typography>
         </Box>

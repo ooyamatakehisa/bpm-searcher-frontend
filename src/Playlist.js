@@ -112,7 +112,7 @@ export default function Playlist({ isSignedIn, setSignInDialogOpen }) {
             width={1}
           >
             {playlistInfos.map((row, index) => (
-              <Grid item xs={3} key={row.id}>
+              <Grid item xs={12} sm={3} xl={2} key={row.id}>
                 <Card
                   onClick={onClickPlaylist(row)}
                   style={{ cursor: "pointer" }}

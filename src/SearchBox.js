@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme) => ({
     padding: "2px 4px",
     display: "flex",
     alignItems: "center",
-    width: "65vw",
     height: 55,
   },
   input: {
@@ -57,7 +56,7 @@ export default function SearchBox() {
       alignItems="center"
       justifyContent="center"
     >
-      <Box p={4}>
+      <Box py={4} width={{ xs: 0.9, sm: 0.7, xl: 0.4}}>
         <Paper className={classes.root}>
           <InputBase
             className={classes.input}

@@ -162,7 +162,11 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
     <Box width={1} display="flex" justifyContent="center">
       {isLoading && <Loading />}
       {!isLoading && (
-        <Box width={0.8} justifyContent="center" p={5}>
+        <Box
+          width={{ xs: 0.9, sm: 0.8, xl: 0.5 }}
+          justifyContent="center"
+          p={5}
+        >
           <Grid container spacing={8}>
             <Grid item xs={12} sm={3} align="center">
               <Grid container direction="column" spacing={4}>
