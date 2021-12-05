@@ -1,7 +1,7 @@
 import React from "react";
 import { CircularProgress, Grid, Box } from "@mui/material";
 
-export default function Waiting() {
+export default function Loading() {
   return (
     <Grid
       container

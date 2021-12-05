@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import Waiting from "./Waiting";
+import Loading from "./Loading";
 import SearchBox from "./SearchBox";
 import SearchResult from "./SearchResult";
 import { API_BASE_URL } from "./constant";
@@ -20,7 +20,7 @@ export default function Content({ isSignedIn, setSignInDialogOpen }) {
   return (
     <div>
       <SearchBox />
-      {result.length === 0 && <Waiting />}
+      {result.length === 0 && <Loading />}
       {result.length !== 0 && (
         <SearchResult
           isSignedIn={isSignedIn}
