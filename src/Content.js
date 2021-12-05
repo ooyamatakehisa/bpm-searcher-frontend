@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import NoResult from "./NoResult";
-import Waiting from "./Waiting";
+import Loading from "./Loading";
 import SearchBox from "./SearchBox";
 import SearchResult from "./SearchResult";
 import { API_BASE_URL } from "./constant";
@@ -22,12 +22,7 @@ export default function Content({ isSignedIn, setSignInDialogOpen }) {
       headers: { "Content-Type": "application/json" },
     };
 
-    fetch(
-      `${API_BASE_URL}/track?search=${query.get(
-        "search"
-      )}`,
-      requestOptions
-    )
+    fetch(`${API_BASE_URL}/track?search=${query.get("search")}`, requestOptions)
       .then((response) => {
         if (response.status === 404) {
           setResult([]);
@@ -47,7 +42,7 @@ export default function Content({ isSignedIn, setSignInDialogOpen }) {
   return (
     <div>
       <SearchBox />
-      {!isResponded && <Waiting />}
+      {!isResponded && <Loading />}
       {isResponded && result.length !== 0 && (
         <SearchResult
           isSignedIn={isSignedIn}
