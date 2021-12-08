@@ -19,21 +19,23 @@ import {
   Typography,
   Grid,
 } from "@mui/material";
-import { DeleteSweep } from "@mui/icons-material";
-
-import Snackbar from "./MySnackbar";
+import { useSnackbar } from "notistack";
+import { DeleteSweep, Create } from "@mui/icons-material";
+import CreatePlaylistDialog from "./CreatePlaylistDialog";
 import { API_BASE_URL } from "./constant";
 import Loading from "./Loading";
 
 export default function Playlist({ isSignedIn, setSignInDialogOpen }) {
   const [playlistInfos, setPlaylistInfos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [snackbarMessage, setSnackbarMessage] = React.useState("");
+  const [hasNoPlaylist, setHasNoPlaylist] = useState(false);
+  const [openCreatePlaylistDialog, setOpenCreatePlaylistDialog] =
+    useState(false);
   const [playlistIdxForDeletion, setPlaylistIdxForDeletion] =
     React.useState(null);
   const [openDeletePlaylistDialog, setOpenDeletePlaylistDialog] =
     useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const history = useHistory();
   const { uid } = useParams();
 
@@ -50,6 +52,7 @@ export default function Playlist({ isSignedIn, setSignInDialogOpen }) {
           .then((data) => {
             setPlaylistInfos(data.data);
             setIsLoading(false);
+            setHasNoPlaylist(data.data.length === 0);
           })
           .catch((err) => console.log(err));
       } else {
@@ -63,6 +66,14 @@ export default function Playlist({ isSignedIn, setSignInDialogOpen }) {
     setOpenDeletePlaylistDialog(true);
     setPlaylistIdxForDeletion(index);
   };
+
+  const callbackCreatePlaylist = (playlistInfo) => {
+    setPlaylistInfos((prev) => {
+      const temp = [...prev];
+      temp.push(playlistInfo)
+      return temp;
+    });
+  }
 
   const deletePlaylist = () => {
     const playlistInfo = playlistInfos[playlistIdxForDeletion];
@@ -83,9 +94,9 @@ export default function Playlist({ isSignedIn, setSignInDialogOpen }) {
             const temp = [...prev];
             return temp;
           });
+          setHasNoPlaylist(playlistInfos.length === 0);
 
-          setSnackbarOpen(true);
-          setSnackbarMessage(
+          enqueueSnackbar(
             `"${playlistInfo.name}" is romoved from your playlist list !`
           );
           setOpenDeletePlaylistDialog(false);
@@ -100,9 +111,24 @@ export default function Playlist({ isSignedIn, setSignInDialogOpen }) {
 
   return (
     <Box width={1} display="flex" justifyContent="center">
-      {isLoading && <Loading />}
-      {!isLoading && (
-        <Box width={0.8} py={10} justifyContent="center">
+      <Box width={0.8} py={10} justifyContent="center">
+        <Box pb={5}>
+          <Button
+            variant="outlined"
+            startIcon={<Create />}
+            onClick={() => setOpenCreatePlaylistDialog(true)}
+          >
+            Create Playlist
+          </Button>
+        </Box>
+        {isLoading && <Loading />}
+        {!isLoading && hasNoPlaylist && (
+          <Typography variant="body1" color="text.secondary">
+            There is no playlist. <br />
+            You can create a playlist from "CREATE PlAYLIST" button above.
+          </Typography>
+        )}
+        {!isLoading && !hasNoPlaylist && (
           <Grid
             container
             direction="row"
@@ -146,7 +172,7 @@ export default function Playlist({ isSignedIn, setSignInDialogOpen }) {
 
                     <Typography variant="body2" color="text.secondary">
                       <br />
-                      Created At
+                      Created at
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       {row.created_at}
@@ -159,20 +185,13 @@ export default function Playlist({ isSignedIn, setSignInDialogOpen }) {
                 </Card>
               </Grid>
             ))}
-            {/* <Grid item xs={3}></Grid>
-        <Grid item xs={3}></Grid>
-        <Grid item xs={3}></Grid> */}
-            {/* {playlist.length !== 0 && (
-          <DraggableTable playlist={playlist} playlistInfo={playlistInfo} />
-          )}
-        {playlist.length == 0 && <Waiting />} */}
           </Grid>
-        </Box>
-      )}
-      <Snackbar
-        snackbarOpen={snackbarOpen}
-        setSnackbarOpen={setSnackbarOpen}
-        message={snackbarMessage}
+        )}
+      </Box>
+      <CreatePlaylistDialog
+        openCreatePlaylistDialog={openCreatePlaylistDialog}
+        setOpenCreatePlaylistDialog={setOpenCreatePlaylistDialog}
+        onClickCompleteCallback={callbackCreatePlaylist}
       />
       <Dialog
         open={openDeletePlaylistDialog}

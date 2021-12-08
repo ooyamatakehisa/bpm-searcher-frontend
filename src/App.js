@@ -1,22 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import React from "react";
 import {
   createTheme,
   ThemeProvider,
   StyledEngineProvider,
 } from "@mui/material/styles";
-import { makeStyles } from "@mui/styles";
-import firebase from "firebase";
+import { IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { SnackbarProvider } from "notistack";
 
-import Header from "./Header";
-import SongDetail from "./SongDetail";
-import Footer from "./Footer";
-import SignInDialog from "./SignInDialog";
-import Content from "./Content";
-import Ranking from "./Ranking";
-import Playlist from "./Playlist";
-import MySnackbar from "./MySnackbar";
-import DraggableTable from "./DraggableTable";
+import Main from "./Main";
 
 const theme = createTheme({
   palette: {
@@ -50,102 +42,30 @@ export const themeLogo = createTheme({
   },
 });
 
-const useStyles = makeStyles((theme) => ({
-  pageContainer: {
-    display: "flex",
-    flexDirection: "column",
-    minHeight: "100vh",
-
-  },
-  contentWrap: {
-    flex: 1
-  }
-}));
-
 function App() {
-  const classes = useStyles();
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  const [user, setUser] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [signInDialogOpen, setSignInDialogOpen] = React.useState(false);
-
-  const signOut = () => {
-    setSnackbarOpen(true);
-    firebase.auth().signOut();
+  const notistackRef = React.createRef();
+  const onClickDismiss = (key) => () => {
+    notistackRef.current.closeSnackbar(key);
   };
-
-  const closeSignInDialog = () => {
-    setSignInDialogOpen(false);
-  };
-
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        setSnackbarOpen(true);
-        setIsSignedIn(true);
-        setUser(user);
-      } else {
-        setIsSignedIn(false);
-        setUser({});
-      }
-    });
-  }, []);
 
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <div className={classes.pageContainer}>
-          <div className={classes.contentWrap}>
-            <Router>
-              <Header
-                // reset={reset}
-                isSignedIn={isSignedIn}
-                user={user}
-                setSignInDialogOpen={() => setSignInDialogOpen(true)}
-                signOut={signOut}
-              />
-              <Switch>
-                <Route path="/" exact>
-                  <Ranking
-                    isSignedIn={isSignedIn}
-                    setSignInDialogOpen={() => setSignInDialogOpen(true)}
-                  />
-                </Route>
-                <Route path="/track" exact>
-                  <Content
-                    isSignedIn={isSignedIn}
-                    setSignInDialogOpen={() => setSignInDialogOpen(true)}
-                  />
-                </Route>
-                <Route path="/user/:uid/playlist" exact>
-                  <Playlist
-                    isSignedIn={isSignedIn}
-                    setSignInDialogOpen={() => setSignInDialogOpen(true)}
-                  />
-                </Route>
-                <Route path="/user/:uid/playlist/:playlistId">
-                  <DraggableTable
-                    isSignedIn={isSignedIn}
-                    setSignInDialogOpen={() => setSignInDialogOpen(true)}
-                  />
-                </Route>
-                <Route path="/track/:spotify_id">
-                  <SongDetail />
-                </Route>
-              </Switch>
-            </Router>
-          </div>
-          <Footer />
-          <MySnackbar
-            snackbarOpen={snackbarOpen}
-            setSnackbarOpen={setSnackbarOpen}
-            message={isSignedIn ? "Sign In !" : "Sign Out !"}
-          />
-          <SignInDialog
-            signInDialogOpen={signInDialogOpen}
-            closeSignInDialog={closeSignInDialog}
-          />
-        </div>
+        <SnackbarProvider
+          maxSnack={3}
+          ref={notistackRef}
+          action={(key) => (
+            <IconButton
+              aria-label="close"
+              onClick={onClickDismiss(key)}
+              color="secondary"
+            >
+              <CloseIcon />
+            </IconButton>
+          )}
+        >
+          <Main />
+        </SnackbarProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   );

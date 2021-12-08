@@ -216,8 +216,8 @@ export default function Header(props) {
                       variant="outlined"
                       color="primary"
                       onClick={signOut}
+                      startIcon={<Logout fontSize="small" />}
                     >
-                      <Logout fontSize="small" />
                       Sign Out
                     </Button>
                   </Box>

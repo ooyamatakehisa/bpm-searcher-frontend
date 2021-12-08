@@ -18,8 +18,8 @@ import {
 import { Reorder, DeleteSweep } from "@mui/icons-material";
 import firebase from "firebase";
 import axios from "axios";
+import { useSnackbar } from "notistack";
 
-import Snackbar from "./MySnackbar";
 import { API_BASE_URL } from "./constant";
 import Loading from "./Loading";
 
@@ -36,10 +36,9 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
   const [playlistTracks, setplaylistTracks] = useState([]);
   const [playlistInfo, setPlaylistInfo] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [snackbarMessage, setSnackbarMessage] = React.useState("");
   const history = useHistory();
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
   let { playlistId } = useParams();
 
   useEffect(() => {
@@ -94,10 +93,9 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
             }
             return temp;
           });
-          setSnackbarOpen(true);
-          setSnackbarMessage(
+          enqueueSnackbar(
             `"${playlistTrack.track.song_name} (${playlistTrack.track.artist})" is romoved from your playlist !`
-          );
+          )
         })
         .catch((err) => console.log(err));
     })();
@@ -191,9 +189,9 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
                   <Typography variant="body2" color="textSecondary">
                     {playlistInfo.num_tracks} songs
                     <br />
-                    Created At {datetime2date(playlistInfo.created_at)}
+                    Created at {datetime2date(playlistInfo.created_at)}
                     <br />
-                    Updated At {datetime2date(playlistInfo.updated_at)}
+                    Updated at {datetime2date(playlistInfo.updated_at)}
                   </Typography>
                 </Grid>
               </Grid>
@@ -333,11 +331,6 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
           </Grid>
         </Box>
       )}
-      <Snackbar
-        snackbarOpen={snackbarOpen}
-        setSnackbarOpen={setSnackbarOpen}
-        message={snackbarMessage}
-      />
     </Box>
   );
 }

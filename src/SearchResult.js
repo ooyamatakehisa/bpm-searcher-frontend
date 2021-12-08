@@ -3,12 +3,6 @@ import SaveAltIcon from "@mui/icons-material/SaveAlt";
 import makeStyles from "@mui/styles/makeStyles";
 import {
   Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Divider,
   IconButton,
   Menu,
@@ -19,14 +13,14 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
   Typography,
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import firebase from "firebase";
+import { useSnackbar } from "notistack";
 
-import Snackbar from "./MySnackbar";
+import CreatePlaylistDialog from "./CreatePlaylistDialog";
 import { API_BASE_URL } from "./constant";
 
 const useStyles = makeStyles({
@@ -48,13 +42,10 @@ export default function SearchBox({
   const [openCreatePlaylistDialog, setOpenCreatePlaylistDialog] =
     useState(false);
   const [playlistInfos, setPlaylistInfos] = useState([]);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [clickedTrack, setClickedTrack] = useState({});
-  const [snackbarMessage, setSnackbarMessage] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const [newPlaylistName, setNewPlaylistName] = useState("");
-  const [newPlaylistDescription, setNewPlaylistDescription] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleClick = (track) => (event) => {
     if (isSignedIn) {
@@ -77,35 +68,30 @@ export default function SearchBox({
     history.push(`/track/${path}`, { data: row });
   };
 
-  const handleTextfiledChange = (set) => (event) => {
-    set(event.target.value);
+  const createPlaylistAndAddTrack = (playlistInfo) => {
+    setOpenCreatePlaylistDialog(false);
+    setPlaylistInfos((prev) => {
+      prev.push(playlistInfo);
+      return prev;
+    });
+    addTrack(playlistInfo.id);
   };
 
-  const createPlaylistAndUpdateTrack = () => {
+  const saveBpm = (playlist_id) => {
+    handleClose();
+    addTrack(playlist_id);
+  };
+
+  const addTrack = (playlist_id) => {
     (async () => {
-      setOpenCreatePlaylistDialog(false);
       const user = await firebase.auth().currentUser;
       const id_token = await user.getIdToken(false);
-      let body = { name: newPlaylistName, desc: newPlaylistDescription };
+      const body = { kind: "track", spotify_id: clickedTrack.spotify_id };
       const config = {
         headers: { Authorization: `Bearer ${id_token}` },
       };
+
       try {
-        const data = await axios.post(
-          `${API_BASE_URL}/user/${user.uid}/playlist`,
-          body,
-          config
-        );
-        const playlistInfo = data.data;
-        setPlaylistInfos((prev) => {
-          prev.push(playlistInfo);
-          console.log(prev);
-          return prev;
-        });
-        setNewPlaylistName("");
-        setNewPlaylistDescription("");
-        const playlist_id = playlistInfo.id;
-        body = { kind: "track", spotify_id: clickedTrack.spotify_id };
         axios
           .put(
             `${API_BASE_URL}/user/${user.uid}/playlist/${playlist_id}`,
@@ -113,8 +99,7 @@ export default function SearchBox({
             config
           )
           .then((data) => {
-            setSnackbarOpen(true);
-            setSnackbarMessage(
+            enqueueSnackbar(
               `"${clickedTrack.song_name} (${clickedTrack.artist})" is added to your playlist !`
             );
           })
@@ -124,6 +109,7 @@ export default function SearchBox({
       }
     })();
   };
+
   useEffect(() => {
     (async () => {
       if (isSignedIn) {
@@ -143,31 +129,6 @@ export default function SearchBox({
       }
     })();
   }, [isSignedIn]);
-
-  const saveBpm = (spotify_id, row, playlist_id) => {
-    handleClose();
-    (async () => {
-      const user = firebase.auth().currentUser;
-      const id_token = await user.getIdToken(false);
-      const body = { kind: "track", spotify_id: spotify_id };
-      const config = {
-        headers: { Authorization: `Bearer ${id_token}` },
-      };
-      axios
-        .put(
-          `${API_BASE_URL}/user/${user.uid}/playlist/${playlist_id}`,
-          body,
-          config
-        )
-        .then((data) => {
-          setSnackbarOpen(true);
-          setSnackbarMessage(
-            `"${row.song_name} (${row.artist})" is added to your playlist !`
-          );
-        })
-        .catch((err) => console.log(err));
-    })();
-  };
 
   return (
     <Box width={1} display="flex" justifyContent="center">
@@ -277,64 +238,16 @@ export default function SearchBox({
         </MenuItem>
         {playlistInfos.length !== 0 && <Divider />}
         {playlistInfos.map((playlist) => (
-          <MenuItem
-            key={playlist.id}
-            onClick={() =>
-              saveBpm(clickedTrack.spotify_id, clickedTrack, playlist.id)
-            }
-          >
+          <MenuItem key={playlist.id} onClick={() => saveBpm(playlist.id)}>
             {playlist.name}
           </MenuItem>
         ))}
       </Menu>
-      <Snackbar
-        snackbarOpen={snackbarOpen}
-        setSnackbarOpen={setSnackbarOpen}
-        message={snackbarMessage}
+      <CreatePlaylistDialog
+        openCreatePlaylistDialog={openCreatePlaylistDialog}
+        setOpenCreatePlaylistDialog={setOpenCreatePlaylistDialog}
+        onClickCompleteCallback={createPlaylistAndAddTrack}
       />
-      <Dialog
-        open={openCreatePlaylistDialog}
-        onClose={() => setOpenCreatePlaylistDialog(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          Create a New Playlist and Add the Song
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <Box py={1}>
-              <TextField
-                id="outlined-basic"
-                label="Name"
-                variant="outlined"
-                value={newPlaylistName}
-                onChange={handleTextfiledChange(setNewPlaylistName)}
-                required={true}
-                fullWidth
-              />
-            </Box>
-            <Box py={1}>
-              <TextField
-                id="outlined-multiline-static"
-                label="Description"
-                value={newPlaylistDescription}
-                onChange={handleTextfiledChange(setNewPlaylistDescription)}
-                multiline
-                fullWidth
-                rows={4}
-              />
-            </Box>
-            You can check the playlist by clicking the icon button in the upper
-            right corner.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={createPlaylistAndUpdateTrack} autoFocus>
-            COMPLETE
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 }
