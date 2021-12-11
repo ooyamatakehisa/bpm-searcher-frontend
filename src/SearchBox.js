@@ -42,10 +42,12 @@ export default function SearchBox() {
   };
 
   const getBpms = () => {
-    history.push({
-      pathname: "/track",
-      search: `?search=${inputValue}`,
-    });
+    if (inputValue != "") {
+      history.push({
+        pathname: "/track",
+        search: `?search=${inputValue}`,
+      });
+    }
   };
 
   return (
@@ -56,7 +58,7 @@ export default function SearchBox() {
       alignItems="center"
       justifyContent="center"
     >
-      <Box py={4} width={{ xs: 0.9, sm: 0.7, xl: 0.4}}>
+      <Box py={4} width={{ xs: 0.9, sm: 0.7, xl: 0.4 }}>
         <Paper className={classes.root}>
           <InputBase
             className={classes.input}
@@ -65,9 +67,7 @@ export default function SearchBox() {
             value={inputValue}
             onChange={handleSearchInputChanges}
             onKeyPress={(e) => {
-              // e.keyCodeは常に0になる
               if (e.key === "Enter") {
-                // エンターキー押下時の処理
                 getBpms();
               }
             }}
