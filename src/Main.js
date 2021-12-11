@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Main() {
   const classes = useStyles();
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isLoadingSignIn, setIsLoadingSignIn] = useState(true);
   const [user, setUser] = useState(false);
   const [signInDialogOpen, setSignInDialogOpen] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -50,6 +51,7 @@ export default function Main() {
         setIsSignedIn(false);
         setUser({});
       }
+      setIsLoadingSignIn(false);
     });
   }, [enqueueSnackbar]);
 
@@ -80,13 +82,13 @@ export default function Main() {
             <Route path="/user/:uid/playlist" exact>
               <Playlist
                 isSignedIn={isSignedIn}
-                setSignInDialogOpen={() => setSignInDialogOpen(true)}
+                isLoadingSignIn={isLoadingSignIn}
               />
             </Route>
             <Route path="/user/:uid/playlist/:playlistId">
               <DraggableTable
                 isSignedIn={isSignedIn}
-                setSignInDialogOpen={() => setSignInDialogOpen(true)}
+                isLoadingSignIn={isLoadingSignIn}
               />
             </Route>
             <Route path="/track/:spotify_id">

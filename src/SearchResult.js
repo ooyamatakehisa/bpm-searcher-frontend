@@ -124,8 +124,6 @@ export default function SearchBox({
             setPlaylistInfos(data.data);
           })
           .catch((err) => console.log(err));
-      } else {
-        // setSignInDialogOpen();
       }
     })();
   }, [isSignedIn]);

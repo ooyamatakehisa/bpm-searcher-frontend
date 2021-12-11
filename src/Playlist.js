@@ -24,8 +24,9 @@ import { DeleteSweep, Create } from "@mui/icons-material";
 import CreatePlaylistDialog from "./CreatePlaylistDialog";
 import { API_BASE_URL } from "./constant";
 import Loading from "./Loading";
+import SignInPage from "./SignInPage";
 
-export default function Playlist({ isSignedIn, setSignInDialogOpen }) {
+export default function Playlist({ isSignedIn, isLoadingSignIn }) {
   const [playlistInfos, setPlaylistInfos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasNoPlaylist, setHasNoPlaylist] = useState(false);
@@ -55,11 +56,9 @@ export default function Playlist({ isSignedIn, setSignInDialogOpen }) {
             setHasNoPlaylist(data.data.length === 0);
           })
           .catch((err) => console.log(err));
-      } else {
-        setSignInDialogOpen();
       }
     })();
-  }, [isSignedIn, setSignInDialogOpen, uid]);
+  }, [isSignedIn, uid]);
 
   const openDeleteDialog = (index) => (e) => {
     e.stopPropagation();
@@ -70,10 +69,10 @@ export default function Playlist({ isSignedIn, setSignInDialogOpen }) {
   const callbackCreatePlaylist = (playlistInfo) => {
     setPlaylistInfos((prev) => {
       const temp = [...prev];
-      temp.push(playlistInfo)
+      temp.push(playlistInfo);
       return temp;
     });
-  }
+  };
 
   const deletePlaylist = () => {
     const playlistInfo = playlistInfos[playlistIdxForDeletion];
@@ -109,113 +108,118 @@ export default function Playlist({ isSignedIn, setSignInDialogOpen }) {
     history.push(`/user/${uid}/playlist/${row.id}`);
   };
 
-  return (
-    <Box width={1} display="flex" justifyContent="center">
-      <Box width={0.8} py={10} justifyContent="center">
-        <Box pb={5}>
-          <Button
-            variant="outlined"
-            startIcon={<Create />}
-            onClick={() => setOpenCreatePlaylistDialog(true)}
-          >
-            Create Playlist
-          </Button>
-        </Box>
-        {isLoading && <Loading />}
-        {!isLoading && hasNoPlaylist && (
-          <Typography variant="body1" color="text.secondary">
-            There is no playlist. <br />
-            You can create a playlist from "CREATE PlAYLIST" button above.
-          </Typography>
-        )}
-        {!isLoading && !hasNoPlaylist && (
-          <Grid
-            container
-            direction="row"
-            alignItems="center"
-            alignContent="center"
-            spacing={2}
-            width={1}
-          >
-            {playlistInfos.map((row, index) => (
-              <Grid item xs={12} sm={3} xl={2} key={row.id}>
-                <Card
-                  onClick={onClickPlaylist(row)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <CardHeader
-                    action={
-                      <IconButton
-                        aria-label="settings"
-                        onClick={openDeleteDialog(index)}
-                      >
-                        <DeleteSweep />
-                      </IconButton>
-                    }
-                    title={row.name}
-                    subheader={`${row.num_tracks} songs`}
-                  />
-                  {/* {row.image_url == null && <Divider/>} */}
-                  {row.image_url != null && (
-                    <CardMedia
-                      component="img"
-                      // height="194"
-                      image={row.image_url}
-                      alt={row.name}
+  if (isLoadingSignIn || isLoading) {
+    return <Loading />;
+  } else if (!isSignedIn) {
+    return <SignInPage />;
+  } else {
+    return (
+      <Box width={1} display="flex" justifyContent="center">
+        <Box width={0.8} py={10} justifyContent="center">
+          <Box pb={5}>
+            <Button
+              variant="outlined"
+              startIcon={<Create />}
+              onClick={() => setOpenCreatePlaylistDialog(true)}
+            >
+              Create Playlist
+            </Button>
+          </Box>
+          {hasNoPlaylist && (
+            <Typography variant="body1" color="text.secondary">
+              There is no playlist. <br />
+              You can create a playlist from "CREATE PlAYLIST" button above.
+            </Typography>
+          )}
+          {!hasNoPlaylist && (
+            <Grid
+              container
+              direction="row"
+              alignItems="center"
+              alignContent="center"
+              spacing={2}
+              width={1}
+            >
+              {playlistInfos.map((row, index) => (
+                <Grid item xs={12} sm={3} xl={2} key={row.id}>
+                  <Card
+                    onClick={onClickPlaylist(row)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <CardHeader
+                      action={
+                        <IconButton
+                          aria-label="settings"
+                          onClick={openDeleteDialog(index)}
+                        >
+                          <DeleteSweep />
+                        </IconButton>
+                      }
+                      title={row.name}
+                      subheader={`${row.num_tracks} songs`}
                     />
-                  )}
-                  <CardContent>
-                    <Typography variant="body1" color="text.secondary">
-                      {row.desc}
-                    </Typography>
-                    <Divider />
+                    {/* {row.image_url == null && <Divider/>} */}
+                    {row.image_url != null && (
+                      <CardMedia
+                        component="img"
+                        // height="194"
+                        image={row.image_url}
+                        alt={row.name}
+                      />
+                    )}
+                    <CardContent>
+                      <Typography variant="body1" color="text.secondary">
+                        {row.desc}
+                      </Typography>
+                      <Divider />
 
-                    <Typography variant="body2" color="text.secondary">
-                      <br />
-                      Created at
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {row.created_at}
-                    </Typography>
-                  </CardContent>
-                  {/* <CardActions>
+                      <Typography variant="body2" color="text.secondary">
+                        <br />
+                        Created at
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {row.created_at}
+                      </Typography>
+                    </CardContent>
+                    {/* <CardActions>
                   <Button size="small">Share</Button>
                   <Button size="small">Learn More</Button>
                 </CardActions> */}
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        )}
-      </Box>
-      <CreatePlaylistDialog
-        openCreatePlaylistDialog={openCreatePlaylistDialog}
-        setOpenCreatePlaylistDialog={setOpenCreatePlaylistDialog}
-        onClickCompleteCallback={callbackCreatePlaylist}
-      />
-      <Dialog
-        open={openDeletePlaylistDialog}
-        onClose={() => setOpenDeletePlaylistDialog(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          Are you sure you want to delete this playlist ?
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            All tracks and infomation of this playlist will be permanently
-            deleted.
-            <br />
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          )}
+        </Box>
+        <CreatePlaylistDialog
+          openCreatePlaylistDialog={openCreatePlaylistDialog}
+          setOpenCreatePlaylistDialog={setOpenCreatePlaylistDialog}
+          onClickCompleteCallback={callbackCreatePlaylist}
+        />
+        <Dialog
+          open={openDeletePlaylistDialog}
+          onClose={() => setOpenDeletePlaylistDialog(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
             Are you sure you want to delete this playlist ?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={deletePlaylist} autoFocus>
-            DELETE
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
-  );
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              All tracks and infomation of this playlist will be permanently
+              deleted.
+              <br />
+              Are you sure you want to delete this playlist ?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={deletePlaylist} autoFocus>
+              DELETE
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+    );
+  }
 }

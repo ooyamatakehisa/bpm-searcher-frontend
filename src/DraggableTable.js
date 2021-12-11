@@ -22,6 +22,7 @@ import { useSnackbar } from "notistack";
 
 import { API_BASE_URL } from "./constant";
 import Loading from "./Loading";
+import SignInPage from "./SignInPage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,8 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
-  // cache the items provided via props in state for purposes of this demo
+export default function DraggableTable({ isSignedIn, isLoadingSignIn }) {
   const [playlistTracks, setplaylistTracks] = useState([]);
   const [playlistInfo, setPlaylistInfo] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -60,11 +60,9 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
             setIsLoading(false);
           })
           .catch((err) => console.log(err));
-      } else {
-        setSignInDialogOpen();
       }
     })();
-  }, [isSignedIn, playlistId, setSignInDialogOpen]);
+  }, [isSignedIn, playlistId]);
 
   const deleteTrack = (playlistTrack, index) => {
     (async () => {
@@ -156,10 +154,13 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
     history.push(`/track/${path}`, { data: row });
   };
 
-  return (
-    <Box width={1} display="flex" justifyContent="center">
-      {isLoading && <Loading />}
-      {!isLoading && (
+  if (isLoadingSignIn || isLoading) {
+    return <Loading />;
+  } else if (!isSignedIn) {
+    return <SignInPage />;
+  } else {
+    return (
+      <Box width={1} display="flex" justifyContent="center">
         <Box
           width={{ xs: 0.9, sm: 0.8, xl: 0.5 }}
           justifyContent="center"
@@ -330,7 +331,7 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
             </Grid>
           </Grid>
         </Box>
-      )}
-    </Box>
-  );
+      </Box>
+    );
+  }
 }
