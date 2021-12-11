@@ -84,18 +84,18 @@ export default function DraggableTable({ isSignedIn, setSignInDialogOpen }) {
             const temp = [...prev];
             return temp;
           });
-          setPlaylistInfo((prev) => {
-            const temp = prev;
-            if (playlistTracks.length > 0) {
-              temp.image_url = playlistTracks[0].track.image_url;
-            } else {
-              temp.image_url = null;
-            }
-            return temp;
+
+          setPlaylistInfo({
+            ...playlistInfo,
+            num_tracks: playlistInfo.num_tracks - 1,
+            image_url:
+              playlistTracks.length > 0
+                ? playlistTracks[0].track.image_url
+                : null,
           });
           enqueueSnackbar(
             `"${playlistTrack.track.song_name} (${playlistTrack.track.artist})" is romoved from your playlist !`
-          )
+          );
         })
         .catch((err) => console.log(err));
     })();
