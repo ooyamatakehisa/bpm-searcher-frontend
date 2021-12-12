@@ -23,6 +23,7 @@ import { useSnackbar } from "notistack";
 import { API_BASE_URL } from "./constant";
 import Loading from "./Loading";
 import SignInPage from "./SignInPage";
+import UpdatePlaylistDialog from "./UpdatePlaylistDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +37,8 @@ export default function DraggableTable({ isSignedIn, isLoadingSignIn }) {
   const [playlistTracks, setplaylistTracks] = useState([]);
   const [playlistInfo, setPlaylistInfo] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [openUpdatePlaylistDialog, setOpenUpdatePlaylistDialog] =
+    useState(false);
   const history = useHistory();
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
@@ -180,17 +183,22 @@ export default function DraggableTable({ isSignedIn, isLoadingSignIn }) {
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6} className={classes.root}>
-                  <Typography variant="h4">{playlistInfo.name}</Typography>
-                  <Typography variant="h5" color="textSecondary">
-                    {playlistInfo.desc}
-                  </Typography>
+                  <Box
+                    onClick={() => setOpenUpdatePlaylistDialog(true)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <Typography variant="h4">{playlistInfo.name}</Typography>
+                    <Typography variant="h5" color="textSecondary">
+                      {playlistInfo.desc}
+                    </Typography>
+                  </Box>
                   <Box py={2}>
                     <Divider />
                   </Box>
                   <Typography variant="body2" color="textSecondary">
                     {playlistInfo.num_tracks} songs
                     <br />
-                    Created at {datetime2date(playlistInfo.created_at)}
+                    Updated at {datetime2date(playlistInfo.created_at)}
                     <br />
                     Updated at {datetime2date(playlistInfo.updated_at)}
                   </Typography>
@@ -331,6 +339,12 @@ export default function DraggableTable({ isSignedIn, isLoadingSignIn }) {
             </Grid>
           </Grid>
         </Box>
+        <UpdatePlaylistDialog
+          openUpdatePlaylistDialog={openUpdatePlaylistDialog}
+          setOpenUpdatePlaylistDialog={setOpenUpdatePlaylistDialog}
+          playlistInfo={playlistInfo}
+          onClickCompleteCallback={setPlaylistInfo}
+        />
       </Box>
     );
   }

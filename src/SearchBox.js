@@ -42,7 +42,7 @@ export default function SearchBox() {
   };
 
   const getBpms = () => {
-    if (inputValue != "") {
+    if (inputValue !== "") {
       history.push({
         pathname: "/track",
         search: `?search=${inputValue}`,

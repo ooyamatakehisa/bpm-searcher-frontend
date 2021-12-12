@@ -47,7 +47,7 @@ export default function CreatePlaylistDialog({
         if (onClickCompleteCallback !== undefined) onClickCompleteCallback(playlistInfo);
         setNewPlaylistName("");
         setNewPlaylistDescription("");
-        enqueueSnackbar(`The playlist "${playlistInfo.name}" is successfuly created !`)
+        enqueueSnackbar(`The playlist "${playlistInfo.name}" is created !`)
       } catch (err) {
         console.log(err);
       }
