@@ -32,7 +32,7 @@ export default function SongDetail() {
           <Grid item container xs={12} sm={6} justifyContent="center">
             <img
               src={data.image_url}
-              style={{ maxWidth: "300px", boxShadow: "0 0 20px black" }}
+              style={{ maxWidth: "300px" }}
               alt={data.song_name}
             />
             <Typography variant="h6">{data.album_name}</Typography>
