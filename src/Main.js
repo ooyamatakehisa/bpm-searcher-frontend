@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
+import { Box } from "@mui/material";
 import { useSnackbar } from "notistack";
 import firebase from "firebase";
 
@@ -67,33 +68,35 @@ export default function Main() {
             signOut={signOut}
           />
           <Switch>
-            <Route path="/" exact>
-              <Ranking
-                isSignedIn={isSignedIn}
-                setSignInDialogOpen={() => setSignInDialogOpen(true)}
-              />
-            </Route>
-            <Route path="/track" exact>
-              <Content
-                isSignedIn={isSignedIn}
-                setSignInDialogOpen={() => setSignInDialogOpen(true)}
-              />
-            </Route>
-            <Route path="/user/:uid/playlist" exact>
-              <Playlist
-                isSignedIn={isSignedIn}
-                isLoadingSignIn={isLoadingSignIn}
-              />
-            </Route>
-            <Route path="/user/:uid/playlist/:playlistId">
-              <DraggableTable
-                isSignedIn={isSignedIn}
-                isLoadingSignIn={isLoadingSignIn}
-              />
-            </Route>
-            <Route path="/track/:spotify_id">
-              <SongDetail />
-            </Route>
+            <Box width={0.9} maxWidth="1100px" mx="auto">
+              <Route path="/" exact>
+                <Ranking
+                  isSignedIn={isSignedIn}
+                  setSignInDialogOpen={() => setSignInDialogOpen(true)}
+                />
+              </Route>
+              <Route path="/track" exact>
+                <Content
+                  isSignedIn={isSignedIn}
+                  setSignInDialogOpen={() => setSignInDialogOpen(true)}
+                />
+              </Route>
+              <Route path="/user/:uid/playlist" exact>
+                <Playlist
+                  isSignedIn={isSignedIn}
+                  isLoadingSignIn={isLoadingSignIn}
+                />
+              </Route>
+              <Route path="/user/:uid/playlist/:playlistId">
+                <DraggableTable
+                  isSignedIn={isSignedIn}
+                  isLoadingSignIn={isLoadingSignIn}
+                />
+              </Route>
+              <Route path="/track/:spotify_id">
+                <SongDetail />
+              </Route>
+            </Box>
           </Switch>
         </Router>
       </div>

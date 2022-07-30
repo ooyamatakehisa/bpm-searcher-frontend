@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 });
 const ITEM_HEIGHT = 100;
 
-export default function SearchBox({
+export default function SearchResult({
   isSignedIn,
   setSignInDialogOpen,
   result,

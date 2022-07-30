@@ -165,7 +165,6 @@ export default function DraggableTable({ isSignedIn, isLoadingSignIn }) {
     return (
       <Box width={1} display="flex" justifyContent="center">
         <Box
-          width={{ xs: 0.9, sm: 0.8, xl: 0.5 }}
           justifyContent="center"
           p={5}
         >

@@ -27,7 +27,7 @@ export default function SongDetail() {
   const data = location.state.data;
   return (
     <Box display="flex" justifyContent="center">
-      <Box width={{ xs: 0.8, sm: 0.6 }} justifyContent="center" py={5}>
+      <Box width={{ sm: 0.8 }} justifyContent="center" py={5}>
         <Grid container spacing={4}>
           <Grid item container xs={12} sm={6} justifyContent="center">
             <img

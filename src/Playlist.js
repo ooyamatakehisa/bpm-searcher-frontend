@@ -115,7 +115,7 @@ export default function Playlist({ isSignedIn, isLoadingSignIn }) {
   } else {
     return (
       <Box width={1} display="flex" justifyContent="center">
-        <Box width={0.8} py={10} justifyContent="center">
+        <Box width={1} py={10} justifyContent="center">
           <Box pb={5}>
             <Button
               variant="outlined"
@@ -141,7 +141,7 @@ export default function Playlist({ isSignedIn, isLoadingSignIn }) {
               width={1}
             >
               {playlistInfos.map((row, index) => (
-                <Grid item xs={12} sm={3} xl={2} key={row.id}>
+                <Grid item xs={12} sm={4} md={3} xl={2} key={row.id}>
                   <Card
                     onClick={onClickPlaylist(row)}
                     style={{ cursor: "pointer" }}
@@ -162,7 +162,6 @@ export default function Playlist({ isSignedIn, isLoadingSignIn }) {
                     {row.image_url != null && (
                       <CardMedia
                         component="img"
-                        // height="194"
                         image={row.image_url}
                         alt={row.name}
                       />
@@ -181,10 +180,6 @@ export default function Playlist({ isSignedIn, isLoadingSignIn }) {
                         {row.created_at}
                       </Typography>
                     </CardContent>
-                    {/* <CardActions>
-                  <Button size="small">Share</Button>
-                  <Button size="small">Learn More</Button>
-                </CardActions> */}
                   </Card>
                 </Grid>
               ))}
