@@ -19,8 +19,7 @@ export const MODE_DICT = [
 ]
 
 export const APP_NAME = "BPM Searcher"
-// export const BASE_URL = "http://localhost:8000"
-export const BASE_URL = "https://bpm-searcher.herokuapp.com"
+export const BASE_URL = "https://bpm-searcher.onrender.com"
 export const API_BASE_URL = `${BASE_URL}/api/v1`
 
 export const BPM_MAX = 250;
